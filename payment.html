@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Оплата и получение — FLOWLINK</title>
+<meta name="description" content="Как оплатить FLOWLINK: карта или СБП через ЮKassa. Как приходит архив, что с возвратом и чеком." />
+<link rel="canonical" href="https://flowlink.pages.dev/payment.html" />
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<style>
+  :root{--bg:#08060f;--ink:#f4f1ff;--dim:#a49cc0;--line:rgba(255,255,255,.09);--acc:#8b5cf6}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:#c9c3dd;
+       font:16px/1.75 -apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+  a{color:#b9c3d1;text-decoration:underline;text-underline-offset:2px}
+  a:hover{color:var(--acc)}
+  .wrap{max-width:820px;margin:0 auto;padding:28px 20px 80px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;
+         padding:18px 0 22px;border-bottom:1px solid var(--line);margin-bottom:30px}
+  .logo{display:inline-flex;align-items:center;gap:9px;font-weight:800;letter-spacing:.24em;
+        font-size:14px;color:var(--ink);text-decoration:none}
+  .logo b{color:var(--acc)}
+  .back{font-size:13px;color:var(--dim);text-decoration:none}
+  h1{font-size:clamp(24px,4.4vw,34px);line-height:1.2;margin:0 0 8px;color:var(--ink);letter-spacing:-.01em}
+  .lead{font-size:15px;color:var(--dim);margin:0 0 6px}
+  h2{font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);
+     margin:34px 0 12px;padding-top:18px;border-top:1px solid var(--line)}
+  p{margin:0 0 12px}
+  ul{margin:0 0 14px;padding-left:20px}
+  li{margin-bottom:7px}
+  b{color:var(--ink)}
+  .kv{display:grid;grid-template-columns:190px 1fr;gap:6px 16px;font-size:15px}
+  .kv dt{color:var(--dim)}
+  .kv dd{margin:0}
+  .box{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:14px 0;
+       background:rgba(255,255,255,.02);font-size:14.5px}
+  .note{margin-top:36px;padding-top:18px;border-top:1px solid var(--line);
+        font-size:11px;line-height:1.6;color:#8b95a3}
+  @media (max-width:520px){.wrap{padding:20px 16px 64px}body{font-size:15px}
+    .kv{grid-template-columns:1fr;gap:2px}.kv dd{margin-bottom:8px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="logo" href="./"><img src="assets/favicon.svg" alt="" width="24" height="24" />FLOW<b>LINK</b></a>
+    <a class="back" href="./">← На главную</a>
+  </header>
+
+  <main>
+    <h1>Оплата и получение</h1>
+    <p class="lead">Коротко: платите картой или СБП — архив скачиваете сразу после оплаты.</p>
+
+    <h2>Что покупатель получает</h2>
+    <ul>
+      <li>архив <b>flowlink-v1.0.zip</b>: папка «Расширение» для Chrome и Edge и папка «Гайд» — установка, 12 промптов, 10 приёмов, разбор частых проблем;</li>
+      <li>доступ к обновлениям первого потока — бесплатно;</li>
+      <li>товар цифровой: ничего не доставляется почтой или курьером, файл скачивается со страницы.</li>
+    </ul>
+
+    <h2>Цена</h2>
+    <div class="kv">
+      <dt>Первым 30 покупателям</dt><dd><b>1 990 ₽</b></dd>
+      <dt>Дальше</dt><dd><b>2 990 ₽</b></dd>
+      <dt>Налог</dt><dd>НДС не облагается — продавец применяет НПД</dd>
+      <dt>Подписка</dt><dd>нет, платёж разовый</dd>
+    </div>
+
+    <h2>Как оплатить</h2>
+    <p>Нажмите «Забрать за 1 990 ₽» — откроется защищённая страница <b>ЮKassa</b>. Там доступны
+      банковские карты «Мир», Visa и Mastercard и СБП по QR-коду. Данные карты
+      вводятся на стороне ЮKassa и на наш сайт не попадают.</p>
+    <p>Оплата принимается от физических лиц. Если нужен счёт для организации — напишите на
+      <a href="mailto:icest@bk.ru">icest@bk.ru</a>.</p>
+
+    <h2>Как приходит товар</h2>
+    <p>После успешной оплаты ЮKassa возвращает вас на страницу «Спасибо за оплату». На ней
+      через несколько секунд появляется кнопка <b>«Скачать архив»</b>. Ссылка привязана к номеру
+      платежа и работает только для оплаченного заказа.</p>
+    <ul>
+      <li><b>Срок передачи:</b> сразу после подтверждения оплаты, обычно 5–20 секунд;</li>
+      <li>если вкладку закрыли — откройте <a href="thanks.html">страницу выдачи</a>, номер платежа подставится сам;</li>
+      <li>если ссылка не открылась или файл не скачался — напишите на
+        <a href="mailto:icest@bk.ru">icest@bk.ru</a>, укажите номер платежа или дату и сумму:
+        вышлем архив вручную <b>в течение 24 часов</b>.</li>
+    </ul>
+
+    <h2>Возврат</h2>
+    <p>Товар цифровой, поэтому возврат регулируется публичной офертой (раздел IV, п. 4.2).
+      На практике:</p>
+    <div class="box">
+      Если архив не пришёл, не открывается или расширение не работает в поддерживаемом
+      браузере (Chrome, Edge) и мы не смогли помочь — напишите на
+      <a href="mailto:icest@bk.ru">icest@bk.ru</a>. Вернём деньги тем же способом, которым
+      вы платили, <b>в течение 10 рабочих дней</b> после обращения. Номер платежа ускорит возврат.
+    </div>
+    <p>Возврат не производится, если файл получен и работает: цифровой товар уже передан
+      покупателю и не может быть «возвращён обратно».</p>
+
+    <h2>Чек</h2>
+    <p>Продавец — самозанятый, применяет налог на профессиональный доход. Чек формируется в
+      приложении «Мой налог» и направляется покупателю; при безналичной оплате — в срок,
+      установленный 422-ФЗ. Если чек не пришёл, напишите на почту — продублируем.</p>
+
+    <h2>Контакты и реквизиты</h2>
+    <dl class="kv">
+      <dt>Продавец</dt><dd>Самозанятый Шевцов Алексей Вячеславович</dd>
+      <dt>ИНН</dt><dd>262902895935</dd>
+      <dt>Налоговый режим</dt><dd>НПД (налог на профессиональный доход)</dd>
+      <dt>Почта</dt><dd><a href="mailto:icest@bk.ru">icest@bk.ru</a></dd>
+      <dt>Адрес</dt><dd>357342, Ставропольский край, г. Лермонтов, ул. Молодежная, влд 2, кв 02</dd>
+      <dt>Платёжный партнёр</dt><dd>ЮKassa (ООО НКО «ЮMoney»)</dd>
+    </dl>
+
+    <p class="note">Самозанятый (НПД) · Шевцов Алексей Вячеславович · ИНН 262902895935 ·
+      <a href="offer.html">публичная оферта</a> ·
+      <a href="privacy.html">конфиденциальность</a></p>
+  </main>
+</div>
+</body>
+</html>

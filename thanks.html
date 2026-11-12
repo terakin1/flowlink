@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Оплата — FLOWLINK</title>
+<meta name="description" content="Проверяем оплату и выдаём архив FLOWLINK." />
+<meta name="robots" content="noindex,nofollow" />
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<style>
+  :root{--bg:#08060f;--ink:#f4f1ff;--dim:#a49cc0;--line:rgba(255,255,255,.09);--acc:#8b5cf6}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:#c9c3dd;
+       font:16px/1.7 -apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+  a{color:#b9c3d1}
+  a:hover{color:var(--acc)}
+  .wrap{max-width:640px;margin:0 auto;padding:28px 20px 72px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;
+         padding:18px 0 22px;border-bottom:1px solid var(--line);margin-bottom:34px}
+  .logo{display:inline-flex;align-items:center;gap:9px;font-weight:800;letter-spacing:.24em;
+        font-size:14px;color:var(--ink);text-decoration:none}
+  .logo b{color:var(--acc)}
+  .back{font-size:13px;color:var(--dim);text-decoration:none}
+  h1{font-size:clamp(24px,5vw,32px);line-height:1.2;margin:0 0 12px;color:var(--ink)}
+  p{margin:0 0 14px}
+  .state{border:1px solid var(--line);border-radius:16px;padding:26px 24px;background:rgba(255,255,255,.02)}
+  .state .big{font-size:17px;color:var(--ink);font-weight:600;margin-bottom:8px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#8b5cf6;
+       margin-right:9px;vertical-align:middle}
+  .dot.wait{background:#f5c451}
+  .dot.bad{background:#ff7a67}
+  .btn{display:inline-block;margin-top:18px;padding:16px 26px;border-radius:12px;
+       background:var(--acc);color:#0b0c0f;font-weight:700;text-decoration:none;font-size:16px}
+  .btn:hover{background:#d6ff6b;color:#0b0c0f}
+  .hint{margin-top:18px;font-size:13px;line-height:1.6;color:#8b95a3}
+  .hint a{color:#a8b3c2}
+  .steps{margin:16px 0 0;padding-left:20px;color:#aab4c1;font-size:14px}
+  .steps li{margin-bottom:6px}
+  .note{margin-top:36px;padding-top:18px;border-top:1px solid var(--line);
+        font-size:11px;line-height:1.6;color:#8b95a3}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="logo" href="./"><img src="assets/favicon.svg" alt="" width="24" height="24" />FLOW<b>LINK</b></a>
+    <a class="back" href="./">← На главную</a>
+  </header>
+
+  <main>
+    <h1>Спасибо за оплату</h1>
+    <p>Проверяем платёж — обычно это занимает несколько секунд.</p>
+
+    <div class="state" id="state">
+      <div class="big"><span class="dot wait" id="dot"></span><span id="title">Проверяем платёж…</span></div>
+      <p id="text">Не закрывайте страницу, через пару секунд здесь появится ссылка на архив.</p>
+      <div id="action"></div>
+    </div>
+
+    <div class="hint">
+      Архив — один zip: папка с расширением и папка с гайдом — 12 промптов, 10 приёмов
+      и разбор частых проблем.
+      Если ссылка не открылась, напишите на <a href="mailto:icest@bk.ru">icest@bk.ru</a>
+      и укажите номер платежа — вышлем вручную.
+    </div>
+    <p class="hint" id="pid" hidden></p>
+
+    <p class="note">Самозанятый (НПД) · Шевцов Алексей Вячеславович · ИНН 262902895935 ·
+      <a href="offer.html">оферта</a> · <a href="payment.html">оплата и получение</a></p>
+  </main>
+</div>
+
+<script>
+(function () {
+  var stage = document.getElementById("state");
+  var dot = document.getElementById("dot");
+  var title = document.getElementById("title");
+  var text = document.getElementById("text");
+  var action = document.getElementById("action");
+  var pidBox = document.getElementById("pid");
+
+  function show(kind, t, msg, html) {
+    dot.className = "dot " + kind;
+    title.textContent = t;
+    text.innerHTML = msg || "";
+    action.innerHTML = html || "";
+  }
+
+  var qs = new URLSearchParams(location.search);
+  var id = qs.get("id") || qs.get("InvId");
+  if (!id) {
+    try { id = sessionStorage.getItem("fl_pay"); } catch (e) {}
+  }
+
+  if (!id) {
+    show("bad", "Не нашли номер платежа",
+      "Если деньги списались — напишите на <a href='mailto:icest@bk.ru'>icest@bk.ru</a>: найдём платёж по сумме и времени и пришлём архив вручную.");
+    return;
+  }
+
+  pidBox.hidden = false;
+  pidBox.textContent = "Номер платежа: " + id;
+
+  var tries = 0;
+  var timer = null;
+
+  function poll() {
+    tries += 1;
+    fetch("/api/pay/status?id=" + encodeURIComponent(id), { headers: { accept: "application/json" } })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+      .then(function (res) {
+        var d = res.data || {};
+        if (res.ok && d.status === "succeeded") {
+          clearInterval(timer);
+          show("", "Оплата прошла",
+            "Архив готов. Скачайте его и распакуйте — внутри расширение, инструкция и промпты.",
+            "<a class='btn' href='/api/download?id=" + encodeURIComponent(id) + "'>Скачать архив</a>");
+          return;
+        }
+        if (res.ok && d.status === "canceled") {
+          clearInterval(timer);
+          show("bad", "Платёж отменён",
+            "Деньги не списаны. Можно вернуться на сайт и попробовать снова.",
+            "<a class='btn' href='./'>Вернуться на сайт</a>");
+          return;
+        }
+        if (!res.ok && d.error === "not_configured") {
+          clearInterval(timer);
+          show("bad", "Оплата ещё не подключена",
+            "Напишите на <a href='mailto:icest@bk.ru'>icest@bk.ru</a> — пришлём архив вручную.");
+          return;
+        }
+        if (tries >= 30) {
+          clearInterval(timer);
+          show("wait", "Платёж ещё обрабатывается",
+            "ЮKassa иногда подтверждает оплату дольше минуты. Обновите страницу через пару минут — ссылка появится здесь же.");
+        }
+      })
+      .catch(function () {
+        if (tries >= 30) {
+          clearInterval(timer);
+          show("wait", "Нет связи с сервером",
+            "Проверьте интернет и обновите страницу. Если не помогло — напишите на <a href='mailto:icest@bk.ru'>icest@bk.ru</a>.");
+        }
+      });
+  }
+
+  poll();
+  timer = setInterval(poll, 2500);
+})();
+</script>
+</body>
+</html>
